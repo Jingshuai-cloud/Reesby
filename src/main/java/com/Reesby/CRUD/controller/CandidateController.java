@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,13 +45,16 @@ public class CandidateController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation") })
     @GetMapping("/date/{number}")
-    public @ResponseBody String getDateByNumber(@PathVariable String number){
+    public @ResponseBody JSONArray getDateByNumber(@PathVariable String number){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
         LocalDate before = LocalDate.now().minusDays(Integer.parseInt(number));
         System.out.println(dtf.format(now));
         System.out.println(dtf.format(before));
-        return before + " to " + now;
+        JSONArray date = new JSONArray();
+        date.add(String.valueOf(before));
+        date.add(String.valueOf(now));
+        return date;
     }
 
 
