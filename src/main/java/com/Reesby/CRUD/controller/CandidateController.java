@@ -14,13 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/demo")
 @Tag(name = "contact", description = "the Demo API")
-public class DemoController {
+public class CandidateController {
 
     @Autowired
     CandidateService candidateService;
@@ -36,6 +38,19 @@ public class DemoController {
     @GetMapping("/{id}")
     public @ResponseBody Candidate getCandidtateById(@PathVariable String id){
        return  candidateService.getCandidateById(id);
+    }
+
+    @Operation(summary = "Find Date by number", description = "Find the date by giben number", tags = { "contact" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation") })
+    @GetMapping("/date/{number}")
+    public @ResponseBody String getDateByNumber(@PathVariable String number){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        LocalDate before = LocalDate.now().minusDays(Integer.parseInt(number));
+        System.out.println(dtf.format(now));
+        System.out.println(dtf.format(before));
+        return before + " to " + now;
     }
 
 
