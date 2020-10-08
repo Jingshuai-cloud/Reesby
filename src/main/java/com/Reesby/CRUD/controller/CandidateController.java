@@ -48,12 +48,14 @@ public class CandidateController {
     public @ResponseBody JSONArray getDateByNumber(@PathVariable String number){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
-        LocalDate before = LocalDate.now().minusDays(Integer.parseInt(number));
-        System.out.println(dtf.format(now));
-        System.out.println(dtf.format(before));
+        int num = Integer.parseInt(number);
         JSONArray date = new JSONArray();
-        date.add(String.valueOf(before));
-        date.add(String.valueOf(now));
+
+        for(int i = 1; i<=num; i++){
+            LocalDate before = LocalDate.now().minusDays(i);
+            date.add(String.valueOf(before));
+        }
+
         return date;
     }
 
